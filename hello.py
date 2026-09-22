@@ -1,57 +1,39 @@
-"""
-WORKFLOW OF PROJECT:
-1- Input from user(Rock,Paper,Scissor)
-2- Computer choice (Computer will choice randomly not conditionally)
-3- Result print
+import tkinter as tk
+from tkinter import messagebox
 
-Cases:
-A- Rock
-Rock - Rock = tie
-Rock - Paper = Paper win
-Rock - Scissor = Rock win
-
-B - Paper
-Paper - Paper = tie
-Paper - Rock = Paper win
-Paper - Scissor = Scissor win
-
-C - Scissor 
-Scissor - Scissor = Tie
-Scissor - Rock = Rock tie
-Scissor - Paper = Scissor win
-
-"""
-
-import random
-itemList = ["Rock", "Paper", "Scissor"]
-
-userChoice = input("Enter your move = Rock , Paper, Scissor = ")
-compChoice = random.choice(itemList)
-
-print(f"User choice = {userChoice}, Computer Choice = {compChoice}")
-
-if userChoice == compChoice:
-    print("Both chooese same: Match tie")
+def checkWinner():
+    for combo in [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]:
+        if buttons[combo[0]]["text"] == buttons[combo[1]]["text"] == buttons[combo[2]]["text"] !="":
+            buttons[combo[0]].config(bg="green")
+            buttons[combo[1]].config(bg="green")
+            buttons[combo[2]].config(bg="green")
+            messagebox.showinfo("Tic-Tac-Toe", f"Player {buttons[combo[0]]["text"]}wins!")
+            root.quit()
+            
+            
+def buttonClick(index):
+    if buttons[index]["text"] == ""  and not winner:
+        buttons[index]["text"] = currentPlayer
+        checkWinner()
+        togglePlayer()
+        
+def togglePlayer():
+    global currentPlayer
+    currentPlayer = "x" if currentPlayer == "0" else "0"
+    label.config(text=f"Player {currentPlayer}'s turn")
     
-elif userChoice ==  "Rock":
-    if compChoice == "Paper":
-     print("Paper covers Rocks = Computer")
-    
-    else:
-        print("Rock smashes Scissor = You win")
-        
-elif userChoice == "Paper":   
-    if compChoice == "Scissor":
-        print("Scissor cuts Paper, Computer win")
-        
-    else:
-        print("Paper cover rock, You win")
-        
-elif userChoice == "Scissor":
-    if compChoice == "Paper":
-     print("Scissor cuts paper, You win")
-     
-else:
-    print("Rock smashes scissor , Computer win")
+root = tk.Tk()
+root.title("Tic-Tac-Toe")
 
-     
+buttons = [tk.Button(root, text="", font=("normal",25), width=6, height=2, command=lambda i=i: buttonClick(i)) for i in range(9)]
+
+for i, button in enumerate(buttons):
+    button.grid(row=i//3, column=i % 3)
+    
+currentPlayer = "x"
+winner = False
+
+label = tk.Label(root, text=f"Player{currentPlayer}'s turn", font=("normal", 16))
+label.grid(row=3, column=0, columnspan=3)
+
+root.mainloop ()
